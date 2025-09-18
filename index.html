@@ -1,0 +1,148 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Use - Fake Chat: Text Story Maker</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        h1 {
+            font-size: 2em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        p, ul {
+            margin-bottom: 15px;
+            text-align: justify; /* Justify text for paragraphs and lists */
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center; /* Center the footer container */
+        }
+        .footer p {
+            text-align: center; /* Explicitly center the footer paragraph */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Terms of Use</h1>
+        
+        <p>Welcome to Fake Chat: Text Story Maker ("the App"), developed by Jayesh Dhanesha ("we," "us," or "our"). By downloading, installing, or using the App, you agree to be bound by these Terms of Use ("Terms"). If you do not agree, please do not use the App.</p>
+
+        <h2>1. Use of the App</h2>
+        <p>The App allows you to create and customize fake chat conversations and profile details for entertainment purposes. You agree to use the App in compliance with all applicable laws and these Terms. You are responsible for any content you create or share using the App.</p>
+        <ul>
+            <li>You must be at least 13 years old to use the App.</li>
+            <li>You may not use the App for illegal, harmful, or offensive purposes, including creating content that violates the rights of others (e.g., defamation, harassment).</li>
+            <li>You may access the device’s photo gallery to export videos, send images as chats, or set profile pictures, with your explicit permission.</li>
+        </ul>
+
+        <h2>2. In-App Purchases</h2>
+        <p>The App offers in-app purchases (e.g., premium features or subscriptions) processed exclusively through Apple’s App Store. All payments, refunds, and billing disputes are handled by Apple in accordance with their terms and conditions. We do not have access to your payment information.</p>
+
+        <h2>3. Third-Party Services</h2>
+        <p>The App uses third-party services, including:</p>
+        <ul>
+            <li><strong>Firebase Analytics (Google)</strong>: Collects anonymized usage data to improve the App. See <a href="https://policies.google.com/terms">Google’s Terms of Service</a>.</li>
+            <li><strong>AdMob (Google)</strong>: Displays advertisements, which may use device identifiers for personalized ads. See <a href="https://policies.google.com/terms">Google’s Terms of Service</a>.</li>
+        </ul>
+        <p>Your use of these services is subject to their respective terms.</p>
+
+        <h2>4. User-Generated Content</h2>
+        <p>All fake chats, profile details, and other content you create are stored locally on your device. You retain ownership of your content but grant us a non-exclusive, royalty-free license to use it solely to provide and improve the App’s functionality. You are responsible for ensuring your content complies with these Terms and applicable laws.</p>
+
+        <h2>5. Intellectual Property</h2>
+        <p>The App and its content (excluding user-generated content) are owned by Jayesh Dhanesha and protected by intellectual property laws. You may not copy, modify, distribute, or reverse-engineer the App without our permission.</p>
+
+        <h2>6. Limitation of Liability</h2>
+        <p>The App is provided "as is" without warranties of any kind. We are not liable for any damages arising from your use of the App, including but not limited to data loss, device issues, or misuse of user-generated content. You use the App at your own risk.</p>
+
+        <h2>7. Termination</h2>
+        <p>We may suspend or terminate your access to the App if you violate these Terms or for any other reason at our discretion. You may stop using the App at any time by uninstalling it.</p>
+
+        <h2>8. Changes to These Terms</h2>
+        <p>We may update these Terms to reflect changes in the App or legal requirements. The updated Terms will be posted at this URL with a revised "Last Updated" date. Continued use of the App constitutes acceptance of the updated Terms.</p>
+
+        <h2>9. Contact Us</h2>
+        <p>If you have questions or concerns about these Terms, please contact us at Email: <a href="mailto:jayeshddhanesha@gmail.com">jayeshddhanesha@gmail.com</a></p>
+<p><strong>Last Updated: September 18, 2025</strong></p>
+        <div class="footer">
+            <p style="text-align: center;">&copy; 2025 Jayesh Dhanesha. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
